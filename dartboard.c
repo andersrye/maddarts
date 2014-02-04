@@ -12,6 +12,8 @@ int main (int argc, char** argv)
 	pcf8574Setup (110, 0x3a);
 	pcf8574Setup (120, 0x24);
 
+	printf("pri %i\n", piHiPri(99));
+
 	int row[10] = {100, 101, 102, 103, 104, 110, 111, 112, 113, 114};
 	int column[7] = {120, 121, 122, 123, 124, 125, 126};
 
@@ -43,16 +45,16 @@ int main (int argc, char** argv)
 	for (;;)
 	{
 		int i;
-		for(i = 0; i < 10; i++)
+		for(i = 3; i < 5; i++)
 		{
 			digitalWrite(row[i], LOW);
 			int j;
-			for(j = 0; j < 7; j++)
+			for(j = 3; j < 5; j++)
 			{
 				int r = digitalRead(column[j]);
 				if(r == 0)
 				{
-					delay(3);
+					delay(1);
 					if(r != digitalRead(column[j])) continue;
 					printf("%s %s %li\n", argv[1], board[i][j], time(NULL));
 					fflush(stdout);
@@ -62,7 +64,7 @@ int main (int argc, char** argv)
 			}
 			digitalWrite(row[i], HIGH);
 		}
-		delay(10);
+//		delay(1);
 	}
 	return 0;
 }
