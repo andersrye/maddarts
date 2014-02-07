@@ -19,21 +19,24 @@ if(s.isOpen() == False):
 
 def format(string):
 	msg = string.split(';')
-	pmsg = "Board " + msg[0] + ": "
-	if msg[2] == "2":
+	pmsg = "ID " + msg[2] + ": "
+	if msg[4] == "2":
 		pmsg += "DOUBLE"
-	elif msg[2] == "3":
+	elif msg[4] == "3":
 		pmsg += "TRIPLE!"
-	pmsg += " " + msg[1]
+	pmsg += " " + msg[3]
 	return pmsg
+	
+buffer = ''
 
-while 1 :
-	output = ''
-	time.sleep(.2)
-	while s.inWaiting() > 0:
-		output += s.read(1)
-	if output != '':
-		string = sys.argv[1] + ";" + output.strip() + ";" + str(int(time.time()*1000))
-		print format(string)
-		p.stdin.write(string + "\n")
+while True:
+	time.sleep(.1)
+	buffer += s.read(s.inWaiting())
+	if '\n' in buffer:
+		for msg in buffer.split("\n")[:-1]:
+			string = "THROW;" + str(int(time.time()*1000)) + ";" + sys.argv[1] + ";" + msg.strip() + "\n"
+			print format(string)
+			#print string
+			p.stdin.write(string)
+		buffer = ''
 		
