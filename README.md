@@ -17,11 +17,11 @@ is a triple 20.
 
 Listens to the messages from the arduino on the serial port, and adds metadata (board ID and time stamp in ms) in the format
 
-	<board-id>;<sector>;<multiplier;<timestamp>
+	THROW;<timestamp>;<board-id>;<sector>;<multiplier
 
 ex.:
 
-	b1;9;1;1391604497717
+	THROW;1391604497717;bid1;9;2
 
 and then broadcasts this message using socat.
 
