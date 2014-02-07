@@ -13,7 +13,6 @@ char* board[10][7] = {{"14;3", "14;2", "14;1", "25;2", "9;1", "9;2", "9;3"},
                       {"19;3", "19;2", "19;1", "NULL", "18;1", "18;2", "18;3"},
                       {"7;3", "7;2", "7;1", "NULL", "1;1", "1;2", "1;3"}};
 
-
 void setup()
 {
   for(int n = 0; n < 10; n++)
@@ -28,41 +27,21 @@ void setup()
   
   Serial.begin(9600);
 }
-int num = 0;
-long start = millis();
+
 void loop()
 {
-  //Serial.println("j");
-  
-   
-                for(int i = 0; i < 10; i++)
-                {
-                        digitalWrite(row[i], LOW);
-                        
-                        //byte pins = B10000000 | PINC << 1 | digitalRead(12);
-                        //if(pins == B11111111) continue;
-                        
-                        for(int j = 0; j < 7; j++)
- 			{
- 				int r = digitalRead(column[j]);
- 				if(r == 0)
- 				{
-                                        //delayMicroseconds(100);
-                                        //if(r != digitalRead(column[j])) continue;
- 
- 					Serial.println(board[i][j]);
-                                        delay(200);
- 					while( digitalRead(column[j]) == 0) { ; }
- 				}
- 			}
-                        
-
-                        digitalWrite(row[i], HIGH);
-                }
-   if(num%1000 == 0)
-   {
-     //Serial.println(millis()-start);
-     start = millis();
-   }
-   num++;
+  for(int i = 0; i < 10; i++)
+  {
+    //PORTD = i < 6 ? 0x7f^(4 << i) : 0x7f;
+    //PORTB = i < 6 ? 0xf : 0xf^(1<<i-6);
+    digitalWrite(row[i], LOW);
+    byte pins = PINC << 1 | digitalRead(column[0]);
+    if(pins != 0x7f)
+    {
+      int j = log(0x7f^pins)/log(2);
+      Serial.println(board[i][j]);
+      while( digitalRead(column[j]) == 0) { ; }
+    }
+    digitalWrite(row[i], HIGH);
+  }
 }
