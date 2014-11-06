@@ -15,6 +15,8 @@ is a triple 20.
 
 ## pi-dart ##
 
+**Requires pySerial**
+
 Listens to the messages from the arduino on the serial port, and adds metadata (board ID and time stamp in ms) in the format
 
 	THROW;<timestamp>;<board-id>;<sector>;<multiplier
